@@ -87,7 +87,7 @@ class ListDataSource<ObjectType:NSManagedObject, CellType: UITableViewCell>: NSO
         }
     }
     
-    // MARK: - Add/Delete Managed Objects
+    // MARK: - Add/Delete Managed Objects, Return Managed Object
     func addNewManagedObject(completion:(ObjectType) -> Void) {
         let newManagedObject = ObjectType(context: viewContext)
         completion(newManagedObject)
@@ -101,5 +101,9 @@ class ListDataSource<ObjectType:NSManagedObject, CellType: UITableViewCell>: NSO
 
             deleteManagedObjectCompletion(count)
         }
+    }
+    
+    func managedObject(indexPath: IndexPath) -> ObjectType {
+        return fetchedResultsController.object(at: indexPath)
     }
 }

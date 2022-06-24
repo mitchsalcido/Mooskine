@@ -18,7 +18,6 @@ class NotebooksListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         navigationItem.titleView = UIImageView(image: #imageLiteral(resourceName: "toolbar-cow"))
         navigationItem.rightBarButtonItem = editButtonItem
     }
@@ -45,7 +44,6 @@ class NotebooksListViewController: UIViewController {
         fetchRequest.sortDescriptors = [sortDescriptor]
         
         listDataSource = ListDataSource<Notebook, NotebookCell>(viewContext: dataController.viewContext, fetchRequest: fetchRequest, tableView: tableView, cellReuseID: "NotebookCell") { cell, notebook in
-            
             cell.nameLabel.text = notebook.name
             if let count = notebook.notes?.count {
                 let pageString = count == 1 ? "page" : "pages"
@@ -103,14 +101,11 @@ class NotebooksListViewController: UIViewController {
 
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // If this is a NotesListViewController, we'll configure its `Notebook`
-        /*
         if let vc = segue.destination as? NotesListViewController {
             if let indexPath = tableView.indexPathForSelectedRow {
-                vc.notebook = fetchedResultsController.object(at: indexPath)
+                vc.notebook = listDataSource.managedObject(indexPath: indexPath)
                 vc.dataController = dataController
             }
         }
-         */
     }
 }
