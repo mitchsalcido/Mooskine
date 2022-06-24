@@ -79,10 +79,6 @@
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
-                                <connections>
-                                    <outlet property="dataSource" destination="4sO-ya-amD" id="RpU-Ul-TcL"/>
-                                    <outlet property="delegate" destination="4sO-ya-amD" id="RbN-r0-fo4"/>
-                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
