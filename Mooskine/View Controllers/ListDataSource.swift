@@ -88,14 +88,18 @@ class ListDataSource<ObjectType:NSManagedObject, CellType: UITableViewCell>: NSO
         }
     }
     
-    // MARK: - Add/Delete Managed Objects, Return Managed Object
+    // MARK: - Editing, Add/Delete Managed Objects
     func setEditing(editing: Bool) {
-        print("ListDataSource: setEditing")
-        tableView.setEditing(editing, animated: true)
+        
+        // TODO: workaround
+        // unsure why, but tv doesn't come out of true editing state when invoked from calling class/method
+        // ..a little time delay mitigates issue..probably not a good fix
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.tableView.setEditing(editing, animated: true)
+        }
     }
     
     func addNewManagedObject(completion:(ObjectType) -> Void) {
-        setEditing(editing: false)
         let newManagedObject = ObjectType(context: viewContext)
         completion(newManagedObject)
         if let _ = try? viewContext.save() {}
@@ -110,7 +114,12 @@ class ListDataSource<ObjectType:NSManagedObject, CellType: UITableViewCell>: NSO
         }
     }
     
+    // MARK: - Managed Object Info
     func managedObject(indexPath: IndexPath) -> ObjectType {
         return fetchedResultsController.object(at: indexPath)
+    }
+    
+    func managedObjectCount() -> Int {
+        return fetchedResultsController.sections?[0].numberOfObjects ?? 0
     }
 }

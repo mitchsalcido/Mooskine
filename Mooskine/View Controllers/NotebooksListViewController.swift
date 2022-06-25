@@ -10,12 +10,13 @@ import UIKit
 import CoreData
 
 class NotebooksListViewController: UIViewController {
-    /// A table view that displays a list of notebooks
+    
     @IBOutlet weak var tableView: UITableView!
-
+    @IBOutlet weak var AddNotebookBbi: UIBarButtonItem!
     var dataController:DataController!
     var listDataSource:ListDataSource<Notebook, NotebookCell>!
     
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.titleView = UIImageView(image: #imageLiteral(resourceName: "toolbar-cow"))
@@ -25,6 +26,7 @@ class NotebooksListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupFetchedResultsController()
+        editButtonItem.isEnabled = listDataSource.managedObjectCount() > 0
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -35,8 +37,10 @@ class NotebooksListViewController: UIViewController {
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         listDataSource.setEditing(editing: editing)
+        AddNotebookBbi.isEnabled = !editing
     }
     
+    // MARK: - FetchedResultsController setup
     fileprivate func setupFetchedResultsController() {
      
         let fetchRequest:NSFetchRequest<Notebook> = Notebook.fetchRequest()
@@ -53,6 +57,7 @@ class NotebooksListViewController: UIViewController {
         tableView.dataSource = listDataSource
         listDataSource.deleteManagedObjectHandler = {count in
             if count == 0 {
+                self.editButtonItem.isEnabled = false
                 self.setEditing(false, animated: true)
                 self.listDataSource.setEditing(editing: false)
             }
@@ -95,6 +100,7 @@ class NotebooksListViewController: UIViewController {
     }
 
     func addNotebook(name: String) {
+        editButtonItem.isEnabled = true
         listDataSource.addNewManagedObject { notebook in
             notebook.name = name
         }

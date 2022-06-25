@@ -100,6 +100,7 @@
                     </toolbarItems>
                     <navigationItem key="navigationItem" id="Xu2-VJ-ulL"/>
                     <connections>
+                        <outlet property="AddNotebookBbi" destination="er1-LL-wQU" id="VWE-Hj-WvY"/>
                         <outlet property="tableView" destination="0Bf-7a-28k" id="NTD-of-XA7"/>
                     </connections>
                 </viewController>

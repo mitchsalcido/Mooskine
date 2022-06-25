@@ -27,10 +27,7 @@ class NotesListViewController: UIViewController {
         super.viewWillAppear(animated)
         listDataSource = nil
         setupFetchedResultsController()
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
+        editButtonItem.isEnabled = listDataSource.managedObjectCount() > 0
     }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
@@ -54,12 +51,13 @@ class NotesListViewController: UIViewController {
                 cell.dateLabel.text = dataFormatter.string(from: creationDate)
             }
             cell.textPreviewLabel.text = note.text
-            
         })
         tableView.dataSource = listDataSource
         listDataSource.deleteManagedObjectHandler = { count in
             if count == 0 {
+                self.editButtonItem.isEnabled = false
                 self.setEditing(false, animated: true)
+                self.listDataSource.setEditing(editing: false)
             }
         }
     }
@@ -71,6 +69,7 @@ class NotesListViewController: UIViewController {
 
     // MARK: - Adding New Note
     func addNote() {
+        editButtonItem.isEnabled = true
         listDataSource.addNewManagedObject { note in
             note.notebook = notebook
         }
