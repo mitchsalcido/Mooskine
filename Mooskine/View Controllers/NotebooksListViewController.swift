@@ -34,7 +34,7 @@ class NotebooksListViewController: UIViewController {
     
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
-        tableView.setEditing(editing, animated: animated)
+        listDataSource.setEditing(editing: editing)
     }
     
     fileprivate func setupFetchedResultsController() {
@@ -54,6 +54,7 @@ class NotebooksListViewController: UIViewController {
         listDataSource.deleteManagedObjectHandler = {count in
             if count == 0 {
                 self.setEditing(false, animated: true)
+                self.listDataSource.setEditing(editing: false)
             }
         }
     }

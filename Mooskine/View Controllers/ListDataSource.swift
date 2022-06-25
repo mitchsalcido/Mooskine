@@ -89,7 +89,13 @@ class ListDataSource<ObjectType:NSManagedObject, CellType: UITableViewCell>: NSO
     }
     
     // MARK: - Add/Delete Managed Objects, Return Managed Object
+    func setEditing(editing: Bool) {
+        print("ListDataSource: setEditing")
+        tableView.setEditing(editing, animated: true)
+    }
+    
     func addNewManagedObject(completion:(ObjectType) -> Void) {
+        setEditing(editing: false)
         let newManagedObject = ObjectType(context: viewContext)
         completion(newManagedObject)
         if let _ = try? viewContext.save() {}
