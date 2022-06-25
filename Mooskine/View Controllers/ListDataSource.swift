@@ -18,9 +18,10 @@ class ListDataSource<ObjectType:NSManagedObject, CellType: UITableViewCell>: NSO
     let cellConfigurationCompletion:(CellType, ObjectType) -> Void
     
     var fetchedResultsController:NSFetchedResultsController<ObjectType>!
-    var deleteManagedObjectCompletion:((Int) -> Void)!
+    var deleteManagedObjectHandler:((Int) -> Void)!
     
     init(viewContext:NSManagedObjectContext, fetchRequest:NSFetchRequest<ObjectType>, tableView:UITableView, cellReuseID: String, cellConfigurationCompletion: @escaping (CellType, ObjectType) -> Void) {
+        
         self.viewContext = viewContext
         self.fetchRequest = fetchRequest
         self.tableView = tableView
@@ -99,7 +100,7 @@ class ListDataSource<ObjectType:NSManagedObject, CellType: UITableViewCell>: NSO
         viewContext.delete(managedObjectToDelete)
         if let _ = try? viewContext.save(), let count = fetchedResultsController.sections?[0].numberOfObjects {
 
-            deleteManagedObjectCompletion(count)
+            deleteManagedObjectHandler(count)
         }
     }
     

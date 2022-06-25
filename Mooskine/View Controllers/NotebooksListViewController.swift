@@ -51,7 +51,7 @@ class NotebooksListViewController: UIViewController {
             }
         }
         tableView.dataSource = listDataSource
-        listDataSource.deleteManagedObjectCompletion = {count in
+        listDataSource.deleteManagedObjectHandler = {count in
             if count == 0 {
                 self.setEditing(false, animated: true)
             }
